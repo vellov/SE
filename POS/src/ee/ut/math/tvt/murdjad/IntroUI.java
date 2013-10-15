@@ -19,6 +19,8 @@ public class IntroUI {
 	static String teamName;
 	static String version;
 	
+	
+	
 	/**
 	 * Retrieves data from the two predefined
 	 * properties files (application.properties
