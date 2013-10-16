@@ -61,7 +61,6 @@ public class IntroUI {
 	public static void init() {
 		// Init logger
 		Logger log = Logger.getLogger("log4j.rootLogger");
-		log.getResourceBundle();
 		BasicConfigurator.configure();
 		PropertyConfigurator.configure("log4j.properties");
 		
