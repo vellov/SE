@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+//import org.apache.log4j.Logger;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -18,8 +20,7 @@ public class IntroUI {
 	static String teamMembers;
 	static String teamName;
 	static String version;
-	
-	
+	//static Logger log = Logger.getLogger(IntroUI.class);
 	
 	/**
 	 * Retrieves data from the two predefined
@@ -48,6 +49,7 @@ public class IntroUI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//log.debug("Read properties");
 	}
 	
 	/**
