@@ -5,24 +5,20 @@
 	<property name="build.dir" value="build"/>
 	<property name="class.dir" value="${build.dir}/classes"/>
 	<property name="jar.dir" value="${build.dir}/jar"/>
-	<property name="main-class" value="Intro"/>
+	<property name="main.class" value="ee.ut.math.tvt.murdjad.Intro"/>
 	
-	<path id="classpath">
-		<fileset dir="${class.dir}" includes="**/*"/>
-	</path>
-	
-<!-- CLEAN | Deletes previous data. -->
+<!-- clean | Eliminates previous data. -->
 	<target name="clean" >
 		<delete dir="${build.dir}"/>
 	</target>
 	
-<!-- Creates folder ${class.dir} -->
+<!-- init | Creates folders build & build/jar. -->
 	<target name="init" depends="clean">
 		<mkdir dir="${class.dir}"/>
 		<mkdir dir="${jar.dir}"/>
 	</target>
 	
-<!-- BUILD | Compiles code from ${src.dir} to ${class.dir}. -->
+<!-- TODO build | Compiles code from src to build/classes. -->
 	<target name="build" depends="init">
 		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}"/>
         <copy todir="${class.dir}">
@@ -31,48 +27,40 @@
 		<!-- TODO log4j -->
 	</target>
 	
-<!-- RUN | TODO (path) Executes the Intro class. -->
+<!-- run | Executes ee.ut.math.tvt.murdjad.Intro in build/classes. -->
 	<target name="run" depends="build">
-		<java classname="Intro" fork="true">
+		<java classname="${main.class}" fork="true">
 			<classpath>
-				<path refid="classpath"/>
-				<pathelement location="${class.dir}/ee/ut/math/tvt/murdjad"/>
+				<path location="${class.dir}"/>
 			</classpath>
 		</java>
 	</target>
-	
-<!-- DIST | TODO Creates murdjad.jar -->
+
+<!-- dist | Updates version.properties and creates murdjad.jar. -->
 	<target name="dist" depends="build">
-		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${build.dir}">
-			<manifest>
-				<attribute name="main-class" value="${main-class}"/>
-			</manifest>
-		</jar>
-		<!-- Adds 1 to build.revision.number -->
+		<!-- Increments build.revision.number in version.properties -->
 		<propertyfile file="version.properties">
 			<entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
 		</propertyfile>
-		<!-- Updates build.number -->
+		<!-- Updates build.number in version.properties -->
 		<loadproperties srcFile="version.properties"/>
 		<property name="new.build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
 		<propertyfile file="version.properties">
 			<entry key="build.number" value="${new.build.number}"/>
 		</propertyfile>
-<!-- creates in the folder build/jar a separate JAR file,
-	that has all your created classes, two property files
-	and other components that are required for running
-	your intro window. The name of the JAR file must be
-	your team name. In addition, with every new JAR file
-	build, your build.revision.number must increase
-	automatically by one and as a result build.number
-	last part must also increase by one -->
+		<!-- Creates a .jar file of ${class.dir} -->
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${class.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="Class-Path" value="${jar.dir}/${ant.project.name}.jar"/>
+			</manifest>
+		</jar>
 	</target>
 	
-<!-- JRUN | Executes murdjad.jar. -->
+<!-- jrun | Executes murdjad.jar in build/jar. -->
 	<target name="jrun" depends="dist">
 		<java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
 			<classpath>
-				<path refid="classpath"/>
 				<path location="${jar.dir}/${ant.project.name}.jar"/>
 			</classpath>
 		</java>
@@ -81,10 +69,8 @@
 </project>
 
 <!--
-·	TODO
 ·	Tag homework_3 eksisteerib ja on korrektne | GITHUB
-·	Targetid build, run eksisteerivad, töötavad
+·	Target build needs log4j
 ·	log4j töötab
-·	jrun target olemas, töötab
 ·	Logitakse välja,et aken on avatud, sisaldab aega ja komponendi nime.
 -->

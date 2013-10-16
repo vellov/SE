@@ -6,7 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-//import org.apache.log4j.Logger;
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 
 import javax.imageio.ImageIO;
@@ -20,7 +24,8 @@ public class IntroUI {
 	static String teamMembers;
 	static String teamName;
 	static String version;
-	//static Logger log = Logger.getLogger(IntroUI.class);
+	
+	
 	
 	/**
 	 * Retrieves data from the two predefined
@@ -49,15 +54,22 @@ public class IntroUI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//log.debug("Read properties");
 	}
 	
 	/**
 	 * Launches our ugly-ass window
 	 */
 	public static void init() {
+		// Init logger
+		Logger log = Logger.getLogger("log4j.rootLogger");
+		log.getResourceBundle();
+		//BasicConfigurator.configure();
+		PropertyConfigurator.configure("log4j.properties");
+		
+		
 		// Updates properties' variables
 		getProp();
+		log.debug("properties' variables updated");
 		// Creates frames
 		JFrame baseFrame = new JFrame("POS");
 		JLabel textLabel = new JLabel("<html>" + teamLeader +
@@ -71,7 +83,7 @@ public class IntroUI {
 			e.printStackTrace();
 		}
 		imgLabel.setIcon(new ImageIcon(image));
-		
+
 		// Sets the layout
 		baseFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		baseFrame.getContentPane().add(textLabel, BorderLayout.PAGE_START);
