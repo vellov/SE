@@ -61,7 +61,7 @@ public class IntroUI {
 		
 		// Updates properties' variables
 		getProp();
-		log.debug("properties' variables updated");
+		
 		// Creates frames
 		JFrame baseFrame = new JFrame("POS");
 		JLabel textLabel = new JLabel("<html>" + teamLeader +
@@ -83,6 +83,7 @@ public class IntroUI {
 		
 		baseFrame.pack();
 		baseFrame.setVisible(true);
+		log.info("Intro window opened");
 	}
 
 	public static void main(String[] args) {

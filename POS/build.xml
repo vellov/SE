@@ -94,8 +94,5 @@
 </project>
 
 <!--
-·	Tag homework_3 eksisteerib ja on korrektne | GITHUB
-·	Target build needs log4j
-·	log4j töötab
-·	Logitakse välja,et aken on avatud, sisaldab aega ja komponendi nime.
+
 -->
