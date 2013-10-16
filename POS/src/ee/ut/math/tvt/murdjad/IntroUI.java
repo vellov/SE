@@ -62,7 +62,8 @@ public class IntroUI {
 		// Init logger
 		Logger log = Logger.getLogger("log4j.rootLogger");
 		BasicConfigurator.configure();
-		PropertyConfigurator.configure("log4j.properties");
+		
+		//PropertyConfigurator.configure("log4j.properties");
 		
 		
 		// Updates properties' variables
