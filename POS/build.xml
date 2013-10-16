@@ -84,6 +84,7 @@
 <!-- jrun | Executes murdjad.jar in build/jar. -->
 	<target name="jrun" depends="dist">
 		<java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
+			<classpath refid="test.classpath"/>
 			<classpath>
 				<path location="${jar.dir}/${ant.project.name}.jar"/>
 			</classpath>
