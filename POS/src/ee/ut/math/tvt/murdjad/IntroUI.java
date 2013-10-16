@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -63,7 +62,7 @@ public class IntroUI {
 		// Init logger
 		Logger log = Logger.getLogger("log4j.rootLogger");
 		log.getResourceBundle();
-		//BasicConfigurator.configure();
+		BasicConfigurator.configure();
 		PropertyConfigurator.configure("log4j.properties");
 		
 		
