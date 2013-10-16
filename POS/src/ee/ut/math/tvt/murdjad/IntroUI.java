@@ -5,11 +5,10 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Properties;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 
 import javax.imageio.ImageIO;
@@ -23,7 +22,7 @@ public class IntroUI {
 	static String teamMembers;
 	static String teamName;
 	static String version;
-	
+	private static final Logger log = Logger.getLogger(IntroUI.class);
 	
 	
 	/**
@@ -58,18 +57,11 @@ public class IntroUI {
 	/**
 	 * Launches our ugly-ass window
 	 */
-	public static void init() {
-		// Init logger
-		Logger rootLog = Logger.getRootLogger();
-		BasicConfigurator.configure();
-		
-		
-		PropertyConfigurator.configure("log4j.properties");
-		
+	public static void init() {		
 		
 		// Updates properties' variables
 		getProp();
-		rootLog.debug("properties' variables updated");
+		log.debug("properties' variables updated");
 		// Creates frames
 		JFrame baseFrame = new JFrame("POS");
 		JLabel textLabel = new JLabel("<html>" + teamLeader +

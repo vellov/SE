@@ -5,7 +5,24 @@
 	<property name="build.dir" value="build"/>
 	<property name="class.dir" value="${build.dir}/classes"/>
 	<property name="jar.dir" value="${build.dir}/jar"/>
+	<property name="conf.dir" value="${basedir}/etc"/>
 	<property name="main.class" value="ee.ut.math.tvt.murdjad.Intro"/>
+	
+	<path id="compile.classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="test.classpath">
+	    <pathelement location="${class.dir}"/>
+	    <!-- conf -->
+	    <pathelement location="${conf.dir}"/>
+	    <fileset dir="lib">
+	        <include name="*.jar"/>
+	    </fileset>
+	    
+	</path>
 	
 <!-- clean | Eliminates previous data. -->
 	<target name="clean" >
@@ -21,7 +38,7 @@
 <!-- TODO build | Compiles code from src to build/classes. -->
 	<target name="build" depends="init">
 		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}"/>
-        <copy todir="${class.dir}">
+        <copy todir="${jar.dir}">
             <fileset dir="." includes="**/*.properties **/*.gif"/>
         </copy>
 		<!-- TODO log4j -->
