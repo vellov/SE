@@ -37,16 +37,23 @@
 	
 <!-- TODO build | Compiles code from src to build/classes. -->
 	<target name="build" depends="init">
-		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}"/>
+		<javac 
+		    includeantruntime="false" 
+		    srcdir="${src.dir}" 
+		    destdir="${class.dir}">
+		    <classpath refid="compile.classpath"/>
+		</javac>
         <copy todir="${jar.dir}">
             <fileset dir="." includes="**/*.properties **/*.gif"/>
         </copy>
+        
 		<!-- TODO log4j -->
 	</target>
 	
 <!-- run | Executes ee.ut.math.tvt.murdjad.Intro in build/classes. -->
 	<target name="run" depends="build">
 		<java classname="${main.class}" fork="true">
+		    <classpath refid="test.classpath"/>
 			<classpath>
 				<path location="${class.dir}"/>
 			</classpath>
