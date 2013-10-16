@@ -60,15 +60,16 @@ public class IntroUI {
 	 */
 	public static void init() {
 		// Init logger
-		Logger log = Logger.getLogger("log4j.rootLogger");
+		Logger rootLog = Logger.getRootLogger();
 		BasicConfigurator.configure();
 		
-		//PropertyConfigurator.configure("log4j.properties");
+		
+		PropertyConfigurator.configure("log4j.properties");
 		
 		
 		// Updates properties' variables
 		getProp();
-		log.debug("properties' variables updated");
+		rootLog.debug("properties' variables updated");
 		// Creates frames
 		JFrame baseFrame = new JFrame("POS");
 		JLabel textLabel = new JLabel("<html>" + teamLeader +
