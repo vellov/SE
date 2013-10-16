@@ -45,7 +45,10 @@
 		</javac>
         <copy todir="${jar.dir}">
             <fileset dir="." includes="**/*.properties **/*.gif"/>
+            <fileset dir="${conf.dir}"/>
+            <fileset dir="./lib"/>
         </copy>
+
         
 		<!-- TODO log4j -->
 	</target>
@@ -73,7 +76,12 @@
 			<entry key="build.number" value="${new.build.number}"/>
 		</propertyfile>
 		<!-- Creates a .jar file of ${class.dir} -->
+		<copy todir="${class.dir}">
+		    <fileset dir="./lib"/>
+		</copy>
 		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${class.dir}">
+		    <fileset dir="${conf.dir}"/>
+		    
 			<manifest>
 				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="Class-Path" value="${jar.dir}/${ant.project.name}.jar"/>
@@ -93,6 +101,3 @@
 	  
 </project>
 
-<!--
-
--->
