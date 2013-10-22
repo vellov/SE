@@ -62,6 +62,13 @@
 			</classpath>
 		</java>
 	</target>
+	
+<!-- runc | Runs the application -->	
+	<target name="runc" depends="build" description="Run the application (console)">
+		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath" fork="yes">
+			<arg value="console" />
+		</java>
+	</target>
 
 <!-- dist | Updates version.properties and creates murdjad.jar. -->
 	<target name="dist" depends="build">
@@ -87,6 +94,29 @@
 				<attribute name="Class-Path" value="${jar.dir}/${ant.project.name}.jar"/>
 			</manifest>
 		</jar>
+	</target>
+
+	<target name="git_add">
+		<exec executable="git">
+			<arg value="add" />
+			<arg value="-A" />
+		</exec>
+	</target>
+
+	<target name="git_commit" depends="git_add">
+		<input message="Please enter commit message: " addproperty="message" />
+		<exec executable="git">
+			<arg value="commit" />
+			<arg value="-m" />
+			<arg value="${message}" />
+		</exec>
+		<antcall target="git_push" />
+	</target>
+
+	<target name="git_push">
+		<exec executable="git">
+			<arg value="push" />
+		</exec>
 	</target>
 	
 <!-- jrun | Executes murdjad.jar in build/jar. -->

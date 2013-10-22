@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class IntroUI {
+public class IntroUI extends JFrame {
 	static String teamLeader;
 	static String teamLeaderEmail;
 	static String teamMembers;
@@ -57,8 +57,9 @@ public class IntroUI {
 	/**
 	 * Launches our ugly-ass window
 	 */
-	public static void init() {		
-		
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 		// Updates properties' variables
 		getProp();
 		
@@ -84,11 +85,6 @@ public class IntroUI {
 		baseFrame.pack();
 		baseFrame.setVisible(true);
 		log.info("Intro window opened");
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
