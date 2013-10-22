@@ -33,11 +33,11 @@ public class Intro {
 			ui.setVisible(true);
 
 			introUI.setAlwaysOnTop(false);
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(3000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 			introUI.setVisible(false);
 		}
 	}
