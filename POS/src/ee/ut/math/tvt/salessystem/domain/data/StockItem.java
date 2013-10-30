@@ -89,7 +89,7 @@ public class StockItem implements Cloneable, DisplayableItem {
 
     /**
      * Method for querying the value of a certain column when StockItems are shown
-     * as table rows in the SalesSstemTableModel. The order of the columns is:
+     * as table rows in the SalesSystemTableModel. The order of the columns is:
      * id, name, price, quantity.
      */
     public Object getColumn(int columnIndex) {
