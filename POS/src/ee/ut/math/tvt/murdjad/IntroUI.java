@@ -5,17 +5,16 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.Properties;
-
-import org.apache.log4j.Logger;
-
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.apache.log4j.Logger;
+
+@SuppressWarnings("serial")
 public class IntroUI extends JFrame {
 	static String teamLeader;
 	static String teamLeaderEmail;
