@@ -84,7 +84,7 @@ public class PurchaseItemPanel extends JPanel {
 
 	// purchase dialog
 
-	List barcode = new ArrayList();
+	List<Long> barcode = new ArrayList<Long>();
 	List<StockItem> Asjad = new ArrayList<StockItem>();
 
 	private JComponent drawDialogPane() {

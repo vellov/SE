@@ -1,0 +1,11 @@
+
+Name at least one method, where a breakpoint will stop the application execution right after pressing the "New purchase" button.
+	newPurchaseButtonClicked();
+Name a method, where a breakpoint will stop the application execution right after pressing the "Confirm" button (during confirming the order).
+	submitPurchaseButtonClicked();
+List the subclasses of the java.awt.Container class, which regularly call doLayout() method (if you randomly use the application, Hint: put the breakpoint to the method Container#doLayout())
+	
+How many times the constructor new String() (without argument) in the class java.lang.String is used after pressing the New purchase button.
+	0
+How many times the constructor new JPanel() (without argument) in the class javax.swing.JPanel is used after pressing the New purchase button.
+	0

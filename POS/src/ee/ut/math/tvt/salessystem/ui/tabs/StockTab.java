@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
@@ -7,6 +8,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -107,15 +110,39 @@ public class StockTab {
 	}
 	private void createAddWindow() {
 		JFrame frame = new JFrame();
-		GridBagConstraints gc = new GridBagConstraints();
-		GridBagLayout gb = new GridBagLayout();
-		
-		JLabel barcode = new JLabel("Barcode");
-		
-		frame.add(barcode);
-		JTextField barcodeText = new JTextField();
-		
-		frame.add(barcodeText, gc);
+		frame.setLayout(new GridLayout(6, 2));
+		frame.add(new JLabel("Barcode: "));
+		final JTextField barcodeText = new JTextField("barcode");
+		frame.add(barcodeText);
+		frame.add(new JLabel("Name: "));
+		final JTextField nameText = new JTextField("name");
+		frame.add(nameText);
+		frame.add(new JLabel("Price: "));
+		final JTextField priceText = new JTextField("price");
+		frame.add(priceText);
+		frame.add(new JLabel("Quantity: "));
+		final JTextField quantityText = new JTextField("quantity");
+		frame.add(quantityText);
+		frame.add(new JLabel("Description: "));
+		final JTextField descText = new JTextField("desc");
+		frame.add(descText);
+		JButton confirm = new JButton("Confirm");
+		confirm.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					StockItem newItem = new StockItem(Long.valueOf(barcodeText.getText()), nameText.getText(), descText.getText(), Double.valueOf(priceText.getText()), Integer.parseInt(quantityText.getText()));
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null,
+							"Please enter valid inputs", "Error #01",
+							JOptionPane.ERROR_MESSAGE);
+				}
+					//fireTableDataChanged();
+			}
+		});
+		frame.add(confirm);
 		frame.pack();
 		frame.setVisible(true);
 	}

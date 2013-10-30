@@ -1,59 +1,56 @@
 <?xml version="1.0"?>
 
 <project name="murdjad" default="build" basedir=".">
-	<property name="src.dir" value="src"/>
-	<property name="build.dir" value="build"/>
-	<property name="class.dir" value="${build.dir}/classes"/>
-	<property name="jar.dir" value="${build.dir}/jar"/>
-	<property name="conf.dir" value="${basedir}/etc"/>
-	<property name="main.class" value="ee.ut.math.tvt.murdjad.Intro"/>
-	
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="class.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jar" />
+	<property name="conf.dir" value="${basedir}/etc" />
+	<property name="main.class" value="ee.ut.math.tvt.murdjad.Intro" />
+
 	<path id="compile.classpath">
 		<fileset dir="lib">
-			<include name="*.jar"/>
+			<include name="*.jar" />
 		</fileset>
 	</path>
-	
-	<path id="test.classpath">
-	    <pathelement location="${class.dir}"/>
-	    <!-- conf -->
-	    <pathelement location="${conf.dir}"/>
-	    <fileset dir="lib">
-	        <include name="*.jar"/>
-	    </fileset>
-	    
-	</path>
-	
-<!-- clean | Eliminates previous data. -->
-	<target name="clean" >
-		<delete dir="${build.dir}"/>
-	</target>
-	
-<!-- init | Creates folders build & build/jar. -->
-	<target name="init" depends="clean">
-		<mkdir dir="${class.dir}"/>
-		<mkdir dir="${jar.dir}"/>
-	</target>
-	
-<!-- TODO build | Compiles code from src to build/classes. -->
-	<target name="build" depends="init">
-		<javac 
-		    includeantruntime="false" 
-		    srcdir="${src.dir}" 
-		    destdir="${class.dir}">
-		    <classpath refid="compile.classpath"/>
-		</javac>
-        <copy todir="${jar.dir}">
-            <fileset dir="." includes="**/*.properties **/*.gif"/>
-            <fileset dir="${conf.dir}"/>
-            <fileset dir="./lib"/>
-        </copy>
 
-        
+	<path id="test.classpath">
+		<pathelement location="${class.dir}" />
+		<!-- conf -->
+		<pathelement location="${conf.dir}" />
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+
+	</path>
+
+	<!-- clean | Eliminates previous data. -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- init | Creates folders build & build/jar. -->
+	<target name="init" depends="clean">
+		<mkdir dir="${class.dir}" />
+		<mkdir dir="${jar.dir}" />
+	</target>
+
+	<!-- TODO build | Compiles code from src to build/classes. -->
+	<target name="build" depends="init">
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<copy todir="${jar.dir}">
+			<fileset dir="." includes="**/*.properties **/*.gif" />
+			<fileset dir="${conf.dir}" />
+			<fileset dir="./lib" />
+		</copy>
+
+
 		<!-- TODO log4j -->
 	</target>
-	
-<!-- run | Executes ee.ut.math.tvt.murdjad.Intro in build/classes. -->
+
+	<!-- run | Executes ee.ut.math.tvt.murdjad.Intro in build/classes. -->
 	<target name="run" depends="build">
 		<!-- 
 		<java classname="${main.class}" fork="true">
@@ -63,45 +60,42 @@
 			</classpath>
 		</java>
 		-->
-		<java
-          classname="ee.ut.math.tvt.murdjad.Intro"
-            classpathref="test.classpath"
-            fork="yes">
-          <jvmarg value="-Xdebug" />
-          <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
-        </java>
+		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath" fork="yes">
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+		</java>
 	</target>
-	
-	
-<!-- runc | Runs the application -->	
+
+
+	<!-- runc | Runs the application -->
 	<target name="runc" depends="build" description="Run the application (console)">
 		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath" fork="yes">
 			<arg value="console" />
 		</java>
 	</target>
 
-<!-- dist | Updates version.properties and creates murdjad.jar. -->
+	<!-- dist | Updates version.properties and creates murdjad.jar. -->
 	<target name="dist" depends="build">
 		<!-- Increments build.revision.number in version.properties -->
 		<propertyfile file="version.properties">
-			<entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
+			<entry key="build.revision.number" type="int" operation="+" value="1" pattern="0" />
 		</propertyfile>
 		<!-- Updates build.number in version.properties -->
-		<loadproperties srcFile="version.properties"/>
-		<property name="new.build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+		<loadproperties srcFile="version.properties" />
+		<property name="new.build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}" />
 		<propertyfile file="version.properties">
-			<entry key="build.number" value="${new.build.number}"/>
+			<entry key="build.number" value="${new.build.number}" />
 		</propertyfile>
 		<!-- Creates a .jar file of ${class.dir} -->
 		<copy todir="${class.dir}">
-		    <fileset dir="./lib"/>
+			<fileset dir="./lib" />
 		</copy>
 		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${class.dir}">
-		    <fileset dir="${conf.dir}"/>
-		    
+			<fileset dir="${conf.dir}" />
+
 			<manifest>
-				<attribute name="Main-Class" value="${main.class}"/>
-				<attribute name="Class-Path" value="${jar.dir}/${ant.project.name}.jar"/>
+				<attribute name="Main-Class" value="${main.class}" />
+				<attribute name="Class-Path" value="${jar.dir}/${ant.project.name}.jar" />
 			</manifest>
 		</jar>
 	</target>
@@ -128,16 +122,16 @@
 			<arg value="push" />
 		</exec>
 	</target>
-	
-<!-- jrun | Executes murdjad.jar in build/jar. -->
+
+	<!-- jrun | Executes murdjad.jar in build/jar. -->
 	<target name="jrun" depends="dist">
 		<java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
-			<classpath refid="test.classpath"/>
+			<classpath refid="test.classpath" />
 			<classpath>
-				<path location="${jar.dir}/${ant.project.name}.jar"/>
+				<path location="${jar.dir}/${ant.project.name}.jar" />
 			</classpath>
 		</java>
 	</target>
-	  
+
 </project>
 

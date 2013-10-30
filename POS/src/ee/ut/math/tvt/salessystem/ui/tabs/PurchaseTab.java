@@ -118,7 +118,7 @@ public class PurchaseTab {
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// confirmSaleEventHandler();
-				saleConfWindow();
+				
 			}
 		});
 
