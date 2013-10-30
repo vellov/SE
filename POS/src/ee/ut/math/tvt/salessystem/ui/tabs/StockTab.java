@@ -13,9 +13,11 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
 
 public class StockTab {
@@ -105,7 +107,15 @@ public class StockTab {
 	}
 	private void createAddWindow() {
 		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		GridBagConstraints gc = new GridBagConstraints();
+		GridBagLayout gb = new GridBagLayout();
+		
+		JLabel barcode = new JLabel("Barcode");
+		
+		frame.add(barcode);
+		JTextField barcodeText = new JTextField();
+		
+		frame.add(barcodeText, gc);
 		frame.pack();
 		frame.setVisible(true);
 	}
