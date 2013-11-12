@@ -7,9 +7,19 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="conf.dir" value="${basedir}/etc" />
 	<property name="main.class" value="ee.ut.math.tvt.murdjad.Intro" />
+	<property name="lib.dir" value="${basedir}/lib" />
 
+	<!-- database variables -->
+	<property name="data.dir" value="${basedir}/data" />
+	<property name="db.file" value="${data.dir}/POSdb" />
+	<property name="db.alias" value="POS" />
+	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
+	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
 	<path id="compile.classpath">
 		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.hibernate.dir}">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -22,6 +32,18 @@
 			<include name="*.jar" />
 		</fileset>
 
+	</path>
+	<path id="run.classpath">
+		<pathelement location="${build.classes.dir}" />
+		<!-- configuration -->
+		<pathelement location="${conf.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar" />
+		</fileset>
 	</path>
 
 	<!-- clean | Eliminates previous data. -->
@@ -45,31 +67,42 @@
 			<fileset dir="${conf.dir}" />
 			<fileset dir="./lib" />
 		</copy>
-
-
 		<!-- TODO log4j -->
+	</target>
+	
+	<!-- dbmanager | Starts the DB manager (duuuh) -->
+	<target name="dbmanager" description="Start the HSQLDB manager">
+		<java classname="org.hsqldb.util.DatabaseManagerSwing"
+			classpathref="run.classpath" fork="yes">
+			<arg line="--user sa --url ${db.url}" />
+		</java>
+	</target>
+
+	<!-- startdb | Pretty self-explanatory too -->
+	<target name="startdb" description="Start the HSQLDB with the default params">
+		<java classname="org.hsqldb.Server" classpathref="run.classpath"
+			fork="yes">
+			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+		</java>
 	</target>
 
 	<!-- run | Executes ee.ut.math.tvt.murdjad.Intro in build/classes. -->
 	<target name="run" depends="build">
-		<!-- 
-		<java classname="${main.class}" fork="true">
-		    <classpath refid="test.classpath"/>
-			<classpath>
-				<path location="${class.dir}"/>
-			</classpath>
-		</java>
-		-->
-		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath" fork="yes">
+		<!-- <java classname="${main.class}" fork="true"> <classpath refid="test.classpath"/> 
+			<classpath> <path location="${class.dir}"/> </classpath> </java> -->
+		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath"
+			fork="yes">
 			<jvmarg value="-Xdebug" />
-			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+			<jvmarg
+				value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
 
 
 	<!-- runc | Runs the application -->
 	<target name="runc" depends="build" description="Run the application (console)">
-		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath" fork="yes">
+		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath"
+			fork="yes">
 			<arg value="console" />
 		</java>
 	</target>
@@ -78,11 +111,13 @@
 	<target name="dist" depends="build">
 		<!-- Increments build.revision.number in version.properties -->
 		<propertyfile file="version.properties">
-			<entry key="build.revision.number" type="int" operation="+" value="1" pattern="0" />
+			<entry key="build.revision.number" type="int" operation="+"
+				value="1" pattern="0" />
 		</propertyfile>
 		<!-- Updates build.number in version.properties -->
 		<loadproperties srcFile="version.properties" />
-		<property name="new.build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}" />
+		<property name="new.build.number"
+			value="${build.major.number}.${build.minor.number}.${build.revision.number}" />
 		<propertyfile file="version.properties">
 			<entry key="build.number" value="${new.build.number}" />
 		</propertyfile>

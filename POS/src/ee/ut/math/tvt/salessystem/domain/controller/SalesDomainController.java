@@ -44,6 +44,9 @@ public interface SalesDomainController {
      */
     public void submitCurrentPurchase(List<SoldItem> goods)
             throws VerificationFailedException;
-
     
+    /**
+     * I have no idea what this does, but I'm guessing it ends a session.
+     */
+    public void endSession();
 }
