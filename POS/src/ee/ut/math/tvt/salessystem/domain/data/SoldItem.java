@@ -1,17 +1,35 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving history. 
  */
+@Entity
+@Table(name = "SOLDITEM")
 public class SoldItem implements Cloneable, DisplayableItem {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	@Column(name = "STOCKITEM_ID")
     private StockItem stockItem;
     
+	@Column(name = "NAME")
     private String name;
+    
+    @Column(name = "QUANTITY")
     private Integer quantity;
+    
+    @Column(name = "ITEMPRICE")
     private double price;
     
     public SoldItem(StockItem stockItem, int quantity) {
@@ -24,7 +42,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     
     
     public Long getId() {
-        return id;
+    	return id;
     }
     
     public void setId(Long id) {
@@ -32,7 +50,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     public String getName() {
-        return name;
+    	return name;
     }
     
     public void setName(String name) {
@@ -40,7 +58,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     public double getPrice() {
-        return price;
+    	return price;
     }
     
     public void setPrice(double price) {
@@ -48,7 +66,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     public Integer getQuantity() {
-        return quantity;
+    	return quantity;
     }
     
     public void setQuantity(Integer quantity) {
@@ -60,7 +78,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
 
     public StockItem getStockItem() {
-        return stockItem;
+    	return stockItem;
     }
 
     public void setStockItem(StockItem stockItem) {
