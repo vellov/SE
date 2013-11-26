@@ -1,13 +1,19 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <project name="murdjad" default="build" basedir=".">
-	<property name="src.dir" value="src" />
-	<property name="build.dir" value="build" />
-	<property name="class.dir" value="${build.dir}/classes" />
-	<property name="jar.dir" value="${build.dir}/jar" />
-	<property name="conf.dir" value="${basedir}/etc" />
-	<property name="main.class" value="ee.ut.math.tvt.murdjad.Intro" />
+	<property file="build.properties"/>
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	
+	<property name="conf.dir" value="${basedir}/conf" />
+	
 	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="build.test.dir" value="${build.dir}/test"/>
+	<property name="test.dir" value="${basedir}/test"/>
+	<property name="dist.dir" value="${build.dir}/jar"/>
+	<property file="version.properties" />
+
 
 	<!-- database variables -->
 	<property name="data.dir" value="${basedir}/data" />
@@ -15,6 +21,26 @@
 	<property name="db.alias" value="POS" />
 	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
 	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
+	
+	<path id="build.classpath">
+		                <fileset dir="${lib.dir}">
+		                        <include name="*.jar"/>
+		                </fileset>
+		                <fileset dir="${lib.hibernate.dir}">
+		                        <include name="*.jar"/>
+		                </fileset>
+		</path>
+
+	<path id="test.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		  <pathelement path="${build.classes.dir}/" />
+		  <pathelement path="${build.test.dir}/" />
+	</path>
+	
+	
+	
 	<path id="compile.classpath">
 		<fileset dir="lib">
 			<include name="*.jar" />
@@ -24,15 +50,7 @@
 		</fileset>
 	</path>
 
-	<path id="test.classpath">
-		<pathelement location="${class.dir}" />
-		<!-- conf -->
-		<pathelement location="${conf.dir}" />
-		<fileset dir="lib">
-			<include name="*.jar" />
-		</fileset>
-
-	</path>
+	
 	<path id="run.classpath">
 		<pathelement location="${build.classes.dir}" />
 		<!-- configuration -->
@@ -53,21 +71,23 @@
 
 	<!-- init | Creates folders build & build/jar. -->
 	<target name="init" depends="clean">
-		<mkdir dir="${class.dir}" />
-		<mkdir dir="${jar.dir}" />
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.test.dir}"/>
 	</target>
 
 	<!-- TODO build | Compiles code from src to build/classes. -->
 	<target name="build" depends="init">
-		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}">
-			<classpath refid="compile.classpath" />
-		</javac>
-		<copy todir="${jar.dir}">
-			<fileset dir="." includes="**/*.properties **/*.gif" />
-			<fileset dir="${conf.dir}" />
-			<fileset dir="./lib" />
-		</copy>
-		<!-- TODO log4j -->
+		<javac srcdir="${src.dir}"
+            destdir="${build.classes.dir}"
+            debug="true"
+            debuglevel="lines,vars,source"
+            encoding="utf-8"
+            compiler="modern"
+            target="1.7"
+            source="1.7"
+        	classpathref="build.classpath" />
+		
 	</target>
 	
 	<!-- dbmanager | Starts the DB manager (duuuh) -->
@@ -90,9 +110,10 @@
 	<target name="run" depends="build">
 		<!-- <java classname="${main.class}" fork="true"> <classpath refid="test.classpath"/> 
 			<classpath> <path location="${class.dir}"/> </classpath> </java> -->
-		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath"
+		<java classname="ee.ut.math.tvt.murdjad.Intro" 
+			classpathref="build.classpath"
 			fork="yes">
-			<jvmarg value="-Xdebug" />
+				<jvmarg value="-Xdebug" />
 			<jvmarg
 				value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
@@ -101,39 +122,38 @@
 
 	<!-- runc | Runs the application -->
 	<target name="runc" depends="build" description="Run the application (console)">
-		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="test.classpath"
+		<java classname="ee.ut.math.tvt.murdjad.Intro" classpathref="build.classpath"
 			fork="yes">
 			<arg value="console" />
 		</java>
 	</target>
 
 	<!-- dist | Updates version.properties and creates murdjad.jar. -->
-	<target name="dist" depends="build">
-		<!-- Increments build.revision.number in version.properties -->
-		<propertyfile file="version.properties">
-			<entry key="build.revision.number" type="int" operation="+"
-				value="1" pattern="0" />
-		</propertyfile>
-		<!-- Updates build.number in version.properties -->
-		<loadproperties srcFile="version.properties" />
-		<property name="new.build.number"
-			value="${build.major.number}.${build.minor.number}.${build.revision.number}" />
-		<propertyfile file="version.properties">
-			<entry key="build.number" value="${new.build.number}" />
-		</propertyfile>
-		<!-- Creates a .jar file of ${class.dir} -->
-		<copy todir="${class.dir}">
-			<fileset dir="./lib" />
-		</copy>
-		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${class.dir}">
-			<fileset dir="${conf.dir}" />
-
-			<manifest>
-				<attribute name="Main-Class" value="${main.class}" />
-				<attribute name="Class-Path" value="${jar.dir}/${ant.project.name}.jar" />
-			</manifest>
-		</jar>
-	</target>
+	 <target name="dist" depends="build" description="Creates the jar file and adds to the version number">
+	                
+	                <propertyfile file="version.properties">
+	                        <entry  key="build.revision.number" type="int" default="1" operation="+" value="1"/>
+	                </propertyfile>
+	                <property file="version.properties"/>
+	                <propertyfile file="version.properties">
+	                        <entry  key="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+	                </propertyfile>
+	                
+	                <mkdir dir="${dist.dir}"/>
+	                <manifestclasspath property="manifest.classpath" jarfile="${dist.dir}/murdjad.jar">
+	                        <classpath>
+	                        <fileset dir="${dist.dir}" includes="*.jar"/>
+	                                <fileset dir="${lib.dir}" includes="*.jar"/>
+	                    </classpath>
+	                </manifestclasspath>
+	                <jar destfile="${dist.dir}/murdjad.jar" basedir="${build.dir}/classes">
+	                        <fileset dir="${basedir}" includes="images/ lib/ application.properties version.properties" />
+	                        <manifest>
+	                                <attribute name="Main-Class" value="ee.ut.math.tvt.murdjad.Intro"/>
+	                            <attribute name="Class-Path" value="${manifest.classpath}"/>
+	                        </manifest>
+	                </jar>
+	        </target>
 
 	<target name="git_add">
 		<exec executable="git">
@@ -160,13 +180,41 @@
 
 	<!-- jrun | Executes murdjad.jar in build/jar. -->
 	<target name="jrun" depends="dist">
-		<java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
-			<classpath refid="test.classpath" />
-			<classpath>
-				<path location="${jar.dir}/${ant.project.name}.jar" />
-			</classpath>
+		<java jar="${dist.dir}/murdjad.jar" fork="true">
+			
 		</java>
 	</target>
 
+    <!-- Build test -->
+    <target name="build-tests" depends="build" description="Build the system">
+            <mkdir dir="${build.test.dir}"/>
+            <javac
+                    includeantruntime="false"
+        srcdir="${test.dir}"
+        destdir="${build.test.dir}"
+        debug="true"
+        debuglevel="lines,vars,source"
+        encoding="utf-8"
+        compiler="modern"
+        target="1.7"
+        source="1.7"
+            classpathref="build.classpath">
+                    <classpath>
+                            <pathelement path="${build.classes.dir}" />
+                    </classpath>
+            </javac>
+    </target>
+
+	
+	 <target name="test" depends="build-tests" description="Run the template application">
+	                <junit>
+	                        <classpath refid="test.classpath" />
+	                        <formatter type="brief" usefile="false" />
+	                        <batchtest>
+	                                <fileset dir="${build.test.dir}" includes="**/*.class" />
+	                        </batchtest>
+	                </junit>
+	        </target>
+	
 </project>
 
